@@ -10,7 +10,7 @@ resource "aws_cloudfront_origin_access_control" "this" {
 }
 
 resource "aws_cloudfront_response_headers_policy" "this" {
-  name = replace("Cache-Control-${local.fqdn}",".","_")
+  name = replace("Cache-Control-${local.fqdn}", ".", "_")
 
   custom_headers_config {
 
@@ -29,9 +29,9 @@ resource "aws_cloudfront_distribution" "this" {
     origin_access_control_id = aws_cloudfront_origin_access_control.this.id
   }
 
-
-  aliases = [local.fqdn]
-  enabled = true
+  http_version = var.http-version
+  aliases      = [local.fqdn]
+  enabled      = true
 
   default_cache_behavior {
     cache_policy_id            = data.aws_cloudfront_cache_policy.this.id
@@ -40,9 +40,6 @@ resource "aws_cloudfront_distribution" "this" {
     target_origin_id           = resource.aws_s3_bucket.this.bucket_regional_domain_name
     response_headers_policy_id = aws_cloudfront_response_headers_policy.this.id
     viewer_protocol_policy     = "allow-all"
-    min_ttl                    = 0
-    default_ttl                = 3600
-    max_ttl                    = 86400
   }
 
   restrictions {
@@ -52,7 +49,8 @@ resource "aws_cloudfront_distribution" "this" {
   }
 
   viewer_certificate {
-    acm_certificate_arn = aws_acm_certificate.this.id
-    ssl_support_method  = "sni-only"
+    minimum_protocol_version = var.min-tls-version
+    acm_certificate_arn      = aws_acm_certificate.this.id
+    ssl_support_method       = "sni-only"
   }
 }

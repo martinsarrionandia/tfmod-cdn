@@ -33,13 +33,13 @@ data "aws_iam_policy_document" "this_s3_access" {
       "s3:ListAccessGrantsInstances",
       "s3:PutAccessPointPublicAccessBlock",
     "s3:CreateJob"]
-    effect   = "Allow"
+    effect    = "Allow"
     resources = ["*"]
-    sid      = "AllowIAMUserReadS3Operations"
+    sid       = "AllowIAMUserReadS3Operations"
   }
   statement {
     actions = ["s3:*"]
-    effect = "Allow"
+    effect  = "Allow"
     resources = ["${resource.aws_s3_bucket.this.arn}",
     "${resource.aws_s3_bucket.this.arn}/*"]
     sid = "AllowIAMUserReadWriteBucketAccess"
