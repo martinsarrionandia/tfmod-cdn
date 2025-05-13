@@ -4,7 +4,7 @@ variable "domain" {
 
 variable "http-version" {
   type    = string
-  default = "http3"
+  default = "http2and3"
 }
 
 variable "min-tls-version" {
