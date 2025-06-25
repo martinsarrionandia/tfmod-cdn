@@ -12,16 +12,29 @@ resource "aws_cloudfront_origin_access_control" "this" {
 resource "aws_cloudfront_response_headers_policy" "this" {
   name = replace("Cache-Control-${local.fqdn}", ".", "_")
 
+  cors_config {
+    access_control_allow_credentials = true
+
+    access_control_allow_headers {
+      items = ["*"]
+    }
+
+    access_control_allow_methods {
+      items = ["GET"]
+    }
+
+    access_control_allow_origins {
+      items = [var.domain, "www.${var.domain}"]
+    }
+
+    origin_override = true
+  }
+
   custom_headers_config {
     items {
       header   = "Cache-Control"
       override = true
       value    = "max-age=31536000"
-    }
-    items {
-      header   = "Access-Control-Allow-Origin"
-      override = true
-      value    = local.allow-origin
     }
   }
 }
