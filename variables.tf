@@ -2,10 +2,6 @@ variable "domain" {
   type = string
 }
 
-variable "allow-origin" {
-  type = string
-}
-
 variable "http-version" {
   type    = string
   default = "http2and3"

@@ -13,7 +13,7 @@ resource "aws_cloudfront_response_headers_policy" "this" {
   name = replace("Cache-Control-${local.fqdn}", ".", "_")
 
   cors_config {
-    access_control_allow_credentials = true
+    access_control_allow_credentials = false
 
     access_control_allow_headers {
       items = ["*"]
