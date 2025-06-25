@@ -13,11 +13,15 @@ resource "aws_cloudfront_response_headers_policy" "this" {
   name = replace("Cache-Control-${local.fqdn}", ".", "_")
 
   custom_headers_config {
-
     items {
       header   = "Cache-Control"
       override = true
       value    = "max-age=31536000"
+    }
+    items {
+      header   = "Access-Control-Allow-Origin"
+      override = true
+      value    = local.allow-origin
     }
   }
 }
