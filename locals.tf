@@ -1,3 +1,3 @@
 locals {
-  fqdn = "cdn.${var.domain}"
+  fqdn = "${var.hostname}.${var.domain}"
 }
