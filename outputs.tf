@@ -9,7 +9,3 @@ output "cdn-bucket-name" {
 output "cdn-bucket-region" {
   value = aws_s3_bucket.this.region
 }
-
-output "s3-policy-arn" {
-  value = aws_iam_policy.this_s3_policy.arn
-}
