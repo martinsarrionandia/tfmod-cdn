@@ -7,7 +7,7 @@ data "aws_iam_policy_document" "this_cloudfront" {
       identifiers = ["cloudfront.amazonaws.com"]
     }
     actions   = ["s3:GetObject"]
-    resources = ["${resource.aws_s3_bucket.this.arn}/*"]
+    resources = ["${aws_s3_bucket.this.arn}/*"]
     condition {
       test     = "StringEquals"
       variable = "AWS:SourceArn"
@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "this_cloudfront" {
   }
 }
 
-data "aws_iam_policy_document" "this_s3_access" {
+data "aws_iam_policy_document" "this_s3_document" {
   statement {
     actions = ["s3:ListAccessPointsForObjectLambda",
       "s3:GetAccessPoint",
@@ -40,10 +40,15 @@ data "aws_iam_policy_document" "this_s3_access" {
   statement {
     actions = ["s3:*"]
     effect  = "Allow"
-    resources = ["${resource.aws_s3_bucket.this.arn}",
-    "${resource.aws_s3_bucket.this.arn}/*"]
+    resources = ["${aws_s3_bucket.this.arn}",
+    "${aws_s3_bucket.this.arn}/*"]
     sid = "AllowIAMUserReadWriteBucketAccess"
   }
+}
+
+resource "aws_iam_policy" "this_s3_policy" {
+  name   = "s3-${local.fqdn}-policy"
+  policy = data.aws_iam_policy_document.this_s3_document.json
 }
 
 resource "aws_iam_user" "this" {
@@ -53,10 +58,9 @@ resource "aws_iam_user" "this" {
   }
 }
 
-resource "aws_iam_user_policy" "this" {
-  name   = "${resource.aws_iam_user.this.name}-policy"
-  user   = aws_iam_user.this.name
-  policy = data.aws_iam_policy_document.this_s3_access.json
+resource "aws_iam_user_policy_attachment" "this_s3_policy_attach" {
+  user       = aws_iam_user.this.name
+  policy_arn = aws_iam_policy.this_s3_policy.arn
 }
 
 resource "aws_iam_access_key" "this" {
