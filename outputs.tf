@@ -9,3 +9,7 @@ output "cdn-bucket-name" {
 output "cdn-bucket-region" {
   value = aws_s3_bucket.this.region
 }
+
+output "cdn-bucket-arn" {
+  value = aws_s3_bucket.this.arn
+}
