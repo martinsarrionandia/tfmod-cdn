@@ -46,7 +46,7 @@ resource "aws_cloudfront_distribution" "this" {
     origin_access_control_id = aws_cloudfront_origin_access_control.this.id
   }
 
-  http_version = var.http-version
+  http_version = var.http_version
   aliases      = [local.fqdn]
   enabled      = true
 
@@ -66,7 +66,7 @@ resource "aws_cloudfront_distribution" "this" {
   }
 
   viewer_certificate {
-    minimum_protocol_version = var.min-tls-version
+    minimum_protocol_version = var.min_tls_version
     acm_certificate_arn      = aws_acm_certificate.this.id
     ssl_support_method       = "sni-only"
   }

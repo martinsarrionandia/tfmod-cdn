@@ -7,12 +7,12 @@ variable "hostname" {
   default = "cdn"
 }
 
-variable "http-version" {
+variable "http_version" {
   type    = string
   default = "http2and3"
 }
 
-variable "min-tls-version" {
+variable "min_tls_version" {
   type    = string
   default = "TLSv1.2_2021"
 }

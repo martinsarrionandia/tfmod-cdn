@@ -3,7 +3,7 @@ resource "aws_secretsmanager_secret" "this" {
 
 }
 
-resource "aws_secretsmanager_secret_version" "this-current" {
+resource "aws_secretsmanager_secret_version" "this_current" {
   secret_id     = resource.aws_secretsmanager_secret.this.id
   secret_string = "{\"aws_access_key_id\":\"${aws_iam_access_key.this.id}\",\"aws_secret_access_key\":\"${aws_iam_access_key.this.secret}\"}"
 }
